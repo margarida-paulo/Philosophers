@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/20 12:09:53 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/05/27 13:06:25 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct s_everything	t_all;
 int		exit_error(char *str_error);
 void	free_philo_until(t_all *base, int i);
 void	free_forks_until(t_all *base, int i);
+void	destroy_mutexes_until(t_all *base, int i);
+void	free_everything(t_all *base);
 
 // Utils
 // 1
@@ -54,26 +56,41 @@ int		ft_atoi_ph(char *nptr);
 // 2
 int		ft_strcmp(char *str1, char *str2);
 char	ft_atoi_check(char *nptr);
+//Test Functions
+void	ft_print_philos(t_all *base);
 
 
-// Parse input
-int	init_philo_forks_structs(t_all *base, int i);
+// Parse init
+int		malloc_philo_forks_structs(t_all *base, int i);
 void	init_argv_to_base(t_all *base, char **argv, int argc);
-int	init_base_struct(t_all *base, int argc, char **argv);
-int	invalid_input(int argc, char **argv);
-int	parse_input(t_all *base, int argc, char **argv);
+int		init_base_struct(t_all *base, int argc, char **argv);
+int		invalid_input(int argc, char **argv);
+int		parse_init(t_all *base, int argc, char **argv);
+
+// Parse Input Mutexes
+int	init_fork_mutexes(t_all *base);
 
 // ********** Structs **********
 
+/* NOTE: In reality, the philosophers have a left and a right fork,
+but for the sake of deadlock protection, we assign a first and a
+second fork. The first fork is the one that the philosophers are
+gonna try to get first, and the second fork is the one that the
+philosophers are gonna try to get second. Since odd philos
+get the left fork as a first and even philos get the right fork
+as a first, there is never gonna be a point where each person
+has one fork and they are all staring into the void, waiting
+for starvation to finally take the best of them.*/
 struct s_philosophers
 {
 	int			id;
+	int			full;
 	long		meals_eaten;
 	char		limit_of_meals;
 	long		last_meal_time;
 	pthread_t 	philo;
-	t_forks		*left_fork;
-	t_forks		*right_fork;
+	t_forks		*first_fork;
+	t_forks		*second_fork;
 };
 
 struct s_forks

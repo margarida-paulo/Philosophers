@@ -6,7 +6,7 @@
 #    By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 12:37:37 by mvalerio          #+#    #+#              #
-#    Updated: 2024/05/17 11:02:50 by mvalerio         ###   ########.fr        #
+#    Updated: 2024/05/27 11:21:07 by mvalerio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRC = \
 	src/exit.c \
 	src/parse_input.c \
 	src/utils_1.c \
-	src/utils_2.c
+	src/utils_2.c \
+	src/parse_input_mutex.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -63,8 +64,5 @@ re: fclean all
 
 v: all clean
 	@./$(NAME)
-
-valgrind: all clean
-	@valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --suppressions=readline.supp --log-file=leaks.txt ./philosophers
 
 .PHONY: fclean clean all re

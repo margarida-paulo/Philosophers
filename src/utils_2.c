@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 10:24:35 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/17 11:03:19 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/05/27 11:40:33 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,16 @@ char	ft_atoi_check(char *nptr)
 	return (ft_check_int(&(nptr[i])));
 }
 
+void	ft_print_philos(t_all *base)
+{
+	int	i;
 
+	i = 0;
+	while (i < base->n_philo)
+	{
+		printf("Philo ID:%d\n",base->philo[i]->id);
+		printf("Philo Left Fork:%d\n", base->philo[i]->left_fork->id);
+		printf("Philo Right Fork:%d\n\n", base->philo[i]->right_fork->id);
+		i++;
+	}
+}

@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_input_mutex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/16 12:37:59 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/27 11:09:32 by mvalerio         ###   ########.fr       */
+/*   Created: 2024/05/27 10:29:09 by mvalerio          #+#    #+#             */
+/*   Updated: 2024/05/27 11:37:24 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-//Arguments: number_of_philosophers | time_to_die | time_to_eat | time_to_sleep | [number_of_times_each_philosopher_must_eat]
-
-int main(int argc, char **argv)
+int	init_fork_mutexes(t_all *base)
 {
-	t_all base;
-	if (parse_init(&base, argc, argv))
-		return (EXIT_FAILURE);
-	free_forks_until(&base, base.n_philo - 1);
-	free_philo_until(&base, base.n_philo - 1);
-	free(base.philo);
-	free(base.forks);
+	int	i;
+
+	i = 0;
+	while (i < base->n_philo)
+	{
+		if (pthread_mutex_init(&((base->forks)[i])->lock, NULL))
+		{
+			destroy_mutexes_until(base, i);
+			free_everything(base);
+			return(exit_error("Forks init failed."));
+		}
+		((base->forks)[i])->id = i;
+		i++;
+	}
+	return (0);
 }
