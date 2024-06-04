@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 11:45:55 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/04 16:00:38 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value)
 char	get_char_mutex(pthread_mutex_t *mutex, char variable)
 {
 	char value;
-	
+
 	pthread_mutex_lock(mutex);
 	value = variable;
 	pthread_mutex_unlock(mutex);
@@ -41,4 +41,16 @@ long get_time(char time_type)
 	else
 		exit_error("You didn't ask for either seconds or milliseconds!");
 	return (0);
+}
+
+void	my_own_usleep(long millisec, t_all *base)
+{
+	long start;
+
+	start = get_time(MILLISECONDS);
+	while(get_time(MILLISECONDS) - start < millisec)
+	{
+		if (get_char_mutex(base->general_mutex, base->simulation_finished))
+			return();
+	}
 }
