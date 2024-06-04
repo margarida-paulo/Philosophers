@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 10:24:35 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/27 11:40:33 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/05/31 09:38:41 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,14 @@ Returns 0 if everything went correctly,
 char	ft_atoi_check(char *nptr)
 {
 	int	i;
-	int	a;
-	int	res;
 
 	i = 0;
-	a = 1;
-	res = 0;
 	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
 		i++;
 	if (nptr[i] == '-')
 		return(1);
 	else if (nptr[i] == '+')
 	{
-		a = 1;
 		i++;
 	}
 	while(nptr[i] == '0')
@@ -69,8 +64,8 @@ void	ft_print_philos(t_all *base)
 	while (i < base->n_philo)
 	{
 		printf("Philo ID:%d\n",base->philo[i]->id);
-		printf("Philo Left Fork:%d\n", base->philo[i]->left_fork->id);
-		printf("Philo Right Fork:%d\n\n", base->philo[i]->right_fork->id);
+		printf("Philo First Fork:%d\n", base->philo[i]->first_fork->id);
+		printf("Philo Second Fork:%d\n\n", base->philo[i]->second_fork->id);
 		i++;
 	}
 }

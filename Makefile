@@ -3,14 +3,12 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+         #
+#    By: maggie <maggie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 12:37:37 by mvalerio          #+#    #+#              #
-#    Updated: 2024/05/27 11:21:07 by mvalerio         ###   ########.fr        #
+#    Updated: 2024/05/31 10:54:37 by maggie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-
 
 NAME = philosophers
 
@@ -23,10 +21,12 @@ PHILO_LIB = philosophers.a
 SRC = \
 	src/main.c \
 	src/exit.c \
-	src/parse_input.c \
+	src/parse_init.c \
 	src/utils_1.c \
 	src/utils_2.c \
-	src/parse_input_mutex.c
+	src/parse_init_mutex.c \
+	src/dinner.c \
+	src/get_set.c
 
 OBJ = $(SRC:.c=.o)
 

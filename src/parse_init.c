@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_input.c                                      :+:      :+:    :+:   */
+/*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/27 13:07:04 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:59:59 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 	base->time_to_die = ft_atoi_ph(argv[2]);
 	base->time_to_eat = ft_atoi_ph(argv[3]);
 	base->time_to_sleep = ft_atoi_ph(argv[4]);
+	base->simulation_ready = 0;
 	if(argc == 6)
 		base->min_meals = ft_atoi_ph(argv[5]);
 	else
@@ -70,6 +71,8 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 	return(malloc_philo_forks_structs(base, -1));
 }
 
+/* Validates the input without storing it anywhere yet.
+*/
 int	invalid_input(int argc, char **argv)
 {
 	int	i;
@@ -97,26 +100,29 @@ int	invalid_input(int argc, char **argv)
 void	init_philos(t_all *base)
 {
 	int	i;
-	unsigned int	left_fork_id;
-	unsigned int	right_fork_id;
 
-	i = 0;
-	while (i < base->n_philo)
+	i = -1;
+	while (++i < base->n_philo)
 	{
 		base->philo[i]->id = i;
 		base->philo[i]->full = 0;
 		base->philo[i]->meals_eaten = 0;
-		if (i == 0)
-			left_fork_id = base->n_philo - 1;
+		base->philo[i]->base = base;
+		if (i % 2 == 0)
+		{
+			base->philo[i]->first_fork = base->forks[i];
+			base->philo[i]->second_fork = base->forks[(i + 1) % base->n_philo];		
+		}
 		else
-			left_fork_id = i - 1;
-		right_fork_id = i;
-		base->philo[i]->left_fork = base->forks[left_fork_id];
-		base->philo[i]->right_fork = base->forks[right_fork_id];
-		i++;
+		{
+			base->philo[i]->second_fork = base->forks[i];
+			base->philo[i]->first_fork = base->forks[(i + 1) % base->n_philo];
+		}
 	}
 }
 
+/* Validates and parses the input and inits the structs.
+*/
 int	parse_init(t_all *base, int argc, char **argv)
 {
 	if (invalid_input(argc, argv))

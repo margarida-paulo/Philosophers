@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:59 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/27 11:09:32 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/05/31 09:56:22 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int main(int argc, char **argv)
 	t_all base;
 	if (parse_init(&base, argc, argv))
 		return (EXIT_FAILURE);
-	free_forks_until(&base, base.n_philo - 1);
-	free_philo_until(&base, base.n_philo - 1);
-	free(base.philo);
-	free(base.forks);
+	dinner(&base);
+	free_everything(&base);
 }

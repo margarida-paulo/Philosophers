@@ -3,18 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/27 13:06:25 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:56:37 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+//Arguments: number_of_philosophers | time_to_die | time_to_eat | time_to_sleep | [min_meals]
 
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <limits.h>
+#include <sys/time.h>
 
 #define RESET		"\033[0m"
 #define BLACK		"\033[30m"
@@ -33,6 +36,9 @@
 #define BOLDMAGENTA	"\033[1m\033[35m"
 #define BOLDCYAN	"\033[1m\033[36m"
 #define BOLDWHITE	"\033[1m\033[37m"
+
+# define SECONDS 0
+# define MILLISECONDS 1
 
 typedef struct s_philosophers	t_philo;
 typedef struct s_forks	t_forks;
@@ -70,6 +76,14 @@ int		parse_init(t_all *base, int argc, char **argv);
 // Parse Input Mutexes
 int	init_fork_mutexes(t_all *base);
 
+// Dinner Simulation
+void dinner(t_all *base);
+
+// Get Set
+void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
+char	get_char_mutex(pthread_mutex_t *mutex, char variable);
+long	get_time(char time_type);
+
 // ********** Structs **********
 
 /* NOTE: In reality, the philosophers have a left and a right fork,
@@ -88,9 +102,10 @@ struct s_philosophers
 	long		meals_eaten;
 	char		limit_of_meals;
 	long		last_meal_time;
-	pthread_t 	philo;
+	pthread_t 	philo_thread;
 	t_forks		*first_fork;
 	t_forks		*second_fork;
+	t_all		*base;
 };
 
 struct s_forks
@@ -108,4 +123,7 @@ struct s_everything
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	min_meals;
+	char	simulation_ready;
+	pthread_mutex_t *general_mutex;
+	long	start_time;
 };
