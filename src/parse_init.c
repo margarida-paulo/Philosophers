@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 17:21:16 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/07 10:58:37 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 	base->time_to_sleep = ft_atoi_ph(argv[4]);
 	base->simulation_ready = 0;
 	if(argc == 6)
-		base->min_meals = ft_atoi_ph(argv[5]);
+		base->limit_of_meals = ft_atoi_ph(argv[5]);
 	else
-		base->min_meals = -1;
+		base->limit_of_meals = -1;
 	base->forks = malloc(sizeof(t_forks*) * base->n_philo);
 	if (!base->forks)
 		return (exit_error("Malloc of forks failed!"));
@@ -111,7 +111,7 @@ void	init_philos(t_all *base)
 		if (i % 2 == 0)
 		{
 			base->philo[i]->first_fork = base->forks[i];
-			base->philo[i]->second_fork = base->forks[(i + 1) % base->n_philo];		
+			base->philo[i]->second_fork = base->forks[(i + 1) % base->n_philo];
 		}
 		else
 		{

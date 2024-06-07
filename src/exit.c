@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 17:22:49 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/07 13:15:11 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-/* Prints the error message sent to it in the color read and 
+/* Prints the error message sent to it in the color read and
 returns EXIT_FAILURE.
 */
 int	exit_error(char *str_error)
@@ -45,7 +45,7 @@ void	free_forks_until(t_all *base, int i)
 void	destroy_fork_mutexes_until(t_all *base, int i)
 {
 	while (i >= 0)
-		pthread_mutex_destroy(&((base->forks)[i]->lock));
+		pthread_mutex_destroy(&((base->forks)[i]->lock_mtx));
 }
 
 /* Frees the array of forks and the array of philosophers.*/
@@ -55,11 +55,12 @@ void	free_everything(t_all *base)
 	free_philo_until(base, base->n_philo - 1);
 	free(base->philo);
 	free(base->forks);
+	free(base);
 }
 
 void	final_free_destroy(t_all *base)
 {
-	pthread_mutex_destroy(base->general_mutex);
-	pthread_mutex_destroy(base->write_mutex);
+	pthread_mutex_destroy(base->sim_finished_mtx);
+	pthread_mutex_destroy(base->write_mtx);
 	free_everything(base);
 }

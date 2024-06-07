@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init_mutex.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:29:09 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 17:20:21 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/07 13:14:43 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	init_mutexes(t_all *base, int i)
 {
 	while (++i < base->n_philo)
 	{
-		if (pthread_mutex_init(&((base->forks)[i])->lock, NULL))
+		if (pthread_mutex_init(&(((base->forks)[i])->lock_mtx), NULL))
 		{
 			destroy_fork_mutexes_until(base, i);
 			free_everything(base);
@@ -24,15 +24,16 @@ int	init_mutexes(t_all *base, int i)
 		}
 		((base->forks)[i])->id = i;
 	}
-	if (pthread_mutex_init(base->general_mutex, NULL))
+	if (pthread_mutex_init(&(base->sim_finished_mtx), NULL))
 	{
 		destroy_fork_mutexes_until(base, base->n_philo - 1);
 		free_everything(base);
 		return (exit_error("General mutex init failed!"));
 	}
-	if (pthread_mutex_init(base->write_mutex, NULL))
+	if (pthread_mutex_init(&(base->write_mtx), NULL))
 	{
 		destroy_fork_mutexes_until(base, base->n_philo - 1);
+		pthread_mutex_destroy(&(base->sim_finished_mtx));
 		free_everything(base);
 		return (exit_error("General mutex init failed!"));
 	}

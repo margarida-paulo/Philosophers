@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 16:52:53 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:40:54 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,18 @@ long get_time(char time_type)
 void	my_own_usleep(long time_usec, t_all *base)
 {
 	long start;
-	int remaining;
 
 	start = get_time(USECS);
 	while(get_time(USECS) - start < time_usec)
 	{
-		if (get_char_mutex(base->general_mutex, base->simulation_finished))
+		if (get_char_mutex(base->sim_finished_mtx, base->simulation_finished))
 			return ;
 		if ((get_time(USECS) - start) / 2 > 50)
 			usleep((get_time(USECS) - start) / 2);
 		else
 		{
 			while (get_time(USECS) - start < time_usec);
+			usleep(1);
 			return ;
 		}
 	}

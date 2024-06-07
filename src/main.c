@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:59 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/31 09:56:22 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:56:10 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@
 
 int main(int argc, char **argv)
 {
-	t_all base;
-	if (parse_init(&base, argc, argv))
+	t_all *base;
+	base = malloc(sizeof(t_all));
+	if (!base)
+		return (exit_error("Malloc of main struct failed.\n"));
+	if (parse_init(base, argc, argv))
 		return (EXIT_FAILURE);
-	dinner(&base);
-	free_everything(&base);
+	dinner(base);
+	final_free_destroy(base);
 }

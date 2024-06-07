@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 17:49:27 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/07 13:14:01 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,13 @@ int		parse_init(t_all *base, int argc, char **argv);
 // Parse Input Mutexes
 int	init_mutexes(t_all *base, int i);
 
-// Dinner Simulation
-void	dinner(t_all *base);
-char	sim_finished(t_all *base)
+// Dinner
+void	eat(t_philo *philo);
+void	display_message(t_philo *philo, t_actions action);
+void	*philo_simulation(void *philosopher);
+int		dinner(t_all *base);
+char	sim_finished(t_all *base);
+
 
 
 // Get Set
@@ -113,35 +117,38 @@ has one fork and they are all staring into the void, waiting
 for starvation to finally take the best of them.*/
 struct s_philosophers
 {
-	int			id;
-	int			full;
-	long		meals_eaten;
-	char		limit_of_meals;
-	long		last_meal_time;
-	pthread_t 	philo_thread;
-	t_forks		*first_fork;
-	t_forks		*second_fork;
-	t_all		*base;
+	int				id;
+	char			full;
+	long			meals_eaten;
+	long			last_meal_time;
+	pthread_t 		*philo_thread;
+	t_forks			*first_fork;
+	t_forks			*second_fork;
+	t_all			*base;
 };
 
+// Id -> Id of the fork, starts at 0
+// Lock -> Mutex of the fork to make sure only one philosopher
+//grabs it at a time
 struct s_forks
 {
-	pthread_mutex_t lock;
+	pthread_mutex_t lock_mtx;
 	unsigned int	id;
 };
 
+
 struct s_everything
 {
-	t_forks	**forks;
-	t_philo	**philo;
-	int	n_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	min_meals;
-	char	simulation_ready;
-	pthread_mutex_t *general_mutex;
-	pthread_mutex_t *write_mutex;
-	long	start_time;
-	char	simulation_finished;
+	t_forks			**forks;
+	t_philo			**philo;
+	int				n_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				limit_of_meals;
+	char			simulation_ready;
+	pthread_mutex_t sim_finished_mtx;
+	pthread_mutex_t write_mtx;
+	long			start_time;
+	char			simulation_finished;
 };
