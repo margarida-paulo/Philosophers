@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/31 10:59:59 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/04 17:21:16 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int	parse_init(t_all *base, int argc, char **argv)
 		return(EXIT_FAILURE);
 	if (init_base_struct(base, argc, argv))
 		return(EXIT_FAILURE);
-	if (init_fork_mutexes(base))
+	if (init_mutexes(base, -1))
 		return(EXIT_FAILURE);
 	init_philos(base);
 	ft_print_philos(base);

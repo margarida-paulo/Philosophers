@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/04 15:37:37 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:49:27 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,30 @@
 
 # define SECONDS 0
 # define MILLISECONDS 1
+# define USECS 2
 
 typedef struct s_philosophers	t_philo;
 typedef struct s_forks	t_forks;
 typedef struct s_everything	t_all;
 
+typedef enum s_philo_actions
+{
+	THINKING,
+	EATING,
+	SLEEPING,
+	TAKE_FIRST_FORK,
+	TAKE_SECOND_FORK,
+	DIED
+} t_actions;
+
+
 // Exit
 int		exit_error(char *str_error);
 void	free_philo_until(t_all *base, int i);
 void	free_forks_until(t_all *base, int i);
-void	destroy_mutexes_until(t_all *base, int i);
+void	destroy_fork_mutexes_until(t_all *base, int i);
 void	free_everything(t_all *base);
+void	final_free_destroy(t_all *base);
 
 // Utils
 // 1
@@ -74,15 +87,18 @@ int		invalid_input(int argc, char **argv);
 int		parse_init(t_all *base, int argc, char **argv);
 
 // Parse Input Mutexes
-int	init_fork_mutexes(t_all *base);
+int	init_mutexes(t_all *base, int i);
 
 // Dinner Simulation
-void dinner(t_all *base);
+void	dinner(t_all *base);
+char	sim_finished(t_all *base)
+
 
 // Get Set
 void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
 char	get_char_mutex(pthread_mutex_t *mutex, char variable);
 long	get_time(char time_type);
+void	my_own_usleep(long time_usec, t_all *base);
 
 // ********** Structs **********
 
@@ -125,6 +141,7 @@ struct s_everything
 	int	min_meals;
 	char	simulation_ready;
 	pthread_mutex_t *general_mutex;
+	pthread_mutex_t *write_mutex;
 	long	start_time;
 	char	simulation_finished;
 };
