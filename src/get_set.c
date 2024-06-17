@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/17 16:33:14 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:27:18 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	my_own_usleep(long time_usec, t_all *base)
 	start = get_time(USECS);
 	while(get_time(USECS) - start < time_usec)
 	{
+		if (get_char_mutex(&(base->someone_died_mtx), base->someone_died))
+			return ;
 		if (get_char_mutex(&(base->sim_finished_mtx), base->simulation_finished))
 			return ;
 		if ((get_time(USECS) - start) / 2 > 50)
