@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/07 12:40:54 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:33:14 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ long get_time(char time_type)
 	return (0);
 }
 
+//Sleeps for a certain amount of microseconds. Different than usleep because
+//if, at some point, the simulation finishes, this usleep also stops, without
+// waiting the full remaining time.
 void	my_own_usleep(long time_usec, t_all *base)
 {
 	long start;
@@ -52,7 +55,7 @@ void	my_own_usleep(long time_usec, t_all *base)
 	start = get_time(USECS);
 	while(get_time(USECS) - start < time_usec)
 	{
-		if (get_char_mutex(base->sim_finished_mtx, base->simulation_finished))
+		if (get_char_mutex(&(base->sim_finished_mtx), base->simulation_finished))
 			return ;
 		if ((get_time(USECS) - start) / 2 > 50)
 			usleep((get_time(USECS) - start) / 2);

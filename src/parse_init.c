@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/07 10:58:37 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/17 18:39:04 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 	base->time_to_eat = ft_atoi_ph(argv[3]);
 	base->time_to_sleep = ft_atoi_ph(argv[4]);
 	base->simulation_ready = 0;
+	base->someone_died = 0;
 	if(argc == 6)
 		base->limit_of_meals = ft_atoi_ph(argv[5]);
 	else
@@ -108,6 +109,7 @@ void	init_philos(t_all *base)
 		base->philo[i]->full = 0;
 		base->philo[i]->meals_eaten = 0;
 		base->philo[i]->base = base;
+		base->philo[i]->is_dead = 0;
 		if (i % 2 == 0)
 		{
 			base->philo[i]->first_fork = base->forks[i];

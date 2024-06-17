@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/07 13:14:01 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/17 18:24:53 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	free_forks_until(t_all *base, int i);
 void	destroy_fork_mutexes_until(t_all *base, int i);
 void	free_everything(t_all *base);
 void	final_free_destroy(t_all *base);
+void	destroy_death_mutexes_until(t_all *base, int i);
+void	destroy_full_mutexes_until(t_all *base, int i);
 
 // Utils
 // 1
@@ -121,10 +123,13 @@ struct s_philosophers
 	char			full;
 	long			meals_eaten;
 	long			last_meal_time;
-	pthread_t 		*philo_thread;
+	pthread_t 		philo_thread;
 	t_forks			*first_fork;
 	t_forks			*second_fork;
 	t_all			*base;
+	char			is_dead;
+	pthread_mutex_t	full_mtx;
+	pthread_mutex_t	death_mtx;
 };
 
 // Id -> Id of the fork, starts at 0
@@ -151,4 +156,7 @@ struct s_everything
 	pthread_mutex_t write_mtx;
 	long			start_time;
 	char			simulation_finished;
-};
+	pthread_t		death_checker;
+	pthread_mutex_t	someone_died_mtx;
+	char			someone_died;
+	};
