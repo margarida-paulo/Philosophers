@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/17 18:24:53 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/18 10:26:08 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define MILLISECONDS 1
 # define USECS 2
 
+#define DEBUG	1
+
 typedef struct s_philosophers	t_philo;
 typedef struct s_forks	t_forks;
 typedef struct s_everything	t_all;
@@ -63,7 +65,6 @@ void	free_forks_until(t_all *base, int i);
 void	destroy_fork_mutexes_until(t_all *base, int i);
 void	free_everything(t_all *base);
 void	final_free_destroy(t_all *base);
-void	destroy_death_mutexes_until(t_all *base, int i);
 void	destroy_full_mutexes_until(t_all *base, int i);
 
 // Utils
@@ -103,6 +104,8 @@ char	sim_finished(t_all *base);
 // Get Set
 void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
 char	get_char_mutex(pthread_mutex_t *mutex, char variable);
+void	set_long_mutex(pthread_mutex_t *mutex, long *to_change, long value);
+long	get_long_mutex(pthread_mutex_t *mutex, long variable);
 long	get_time(char time_type);
 void	my_own_usleep(long time_usec, t_all *base);
 
@@ -128,8 +131,7 @@ struct s_philosophers
 	t_forks			*second_fork;
 	t_all			*base;
 	char			is_dead;
-	pthread_mutex_t	full_mtx;
-	pthread_mutex_t	death_mtx;
+	pthread_mutex_t	philo_mtx;
 };
 
 // Id -> Id of the fork, starts at 0
@@ -157,6 +159,4 @@ struct s_everything
 	long			start_time;
 	char			simulation_finished;
 	pthread_t		death_checker;
-	pthread_mutex_t	someone_died_mtx;
-	char			someone_died;
 	};

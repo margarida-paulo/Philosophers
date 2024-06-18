@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/17 18:39:04 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/18 09:48:13 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,10 @@ Mallocs memory for the array of forks and for the array of philosophers.*/
 int	init_base_struct(t_all *base, int argc, char **argv)
 {
 	base->n_philo = ft_atoi_ph(argv[1]);
-	base->time_to_die = ft_atoi_ph(argv[2]);
-	base->time_to_eat = ft_atoi_ph(argv[3]);
-	base->time_to_sleep = ft_atoi_ph(argv[4]);
+	base->time_to_die = ft_atoi_ph(argv[2]) * 1000;
+	base->time_to_eat = ft_atoi_ph(argv[3]) * 1000;
+	base->time_to_sleep = ft_atoi_ph(argv[4]) * 1000;
 	base->simulation_ready = 0;
-	base->someone_died = 0;
 	if(argc == 6)
 		base->limit_of_meals = ft_atoi_ph(argv[5]);
 	else

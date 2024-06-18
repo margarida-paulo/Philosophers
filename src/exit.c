@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/17 18:31:54 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/18 09:38:39 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,7 @@ void	destroy_full_mutexes_until(t_all *base, int i)
 {
 	while (i >= 0)
 	{
-		pthread_mutex_destroy(&((base->philo)[i]->full_mtx));
-		i--;
-	}
-}
-
-void	destroy_death_mutexes_until(t_all *base, int i)
-{
-	while (i >= 0)
-	{
-		pthread_mutex_destroy(&((base->philo)[i]->death_mtx));
+		pthread_mutex_destroy(&((base->philo)[i]->philo_mtx));
 		i--;
 	}
 }
@@ -83,6 +74,5 @@ void	final_free_destroy(t_all *base)
 {
 	pthread_mutex_destroy(&(base->sim_finished_mtx));
 	pthread_mutex_destroy(&(base->write_mtx));
-	pthread_mutex_destroy(&(base->someone_died_mtx));
 	free_everything(base);
 }
