@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 09:48:13 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 10:36:43 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 	base->time_to_eat = ft_atoi_ph(argv[3]) * 1000;
 	base->time_to_sleep = ft_atoi_ph(argv[4]) * 1000;
 	base->simulation_ready = 0;
+	base->active_philos = 0;
 	if(argc == 6)
 		base->limit_of_meals = ft_atoi_ph(argv[5]);
 	else

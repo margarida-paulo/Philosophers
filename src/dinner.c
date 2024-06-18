@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 10:30:21 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 14:20:20 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,10 @@ void	*philo_simulation(void *philosopher)
 	philo = (t_philo *)philosopher;
 	while(!get_char_mutex(&(philo->base->sim_finished_mtx), philo->base->simulation_ready))
 		usleep(1);
-	philo->last_meal_time = philo->base->start_time;
+	pthread_mutex_lock(&(philo->base->write_mtx));
+	philo->base->active_philos++;
+	pthread_mutex_unlock(&(philo->base->write_mtx));
+	set_long_mutex(&(philo->philo_mtx), &(philo->last_meal_time), philo->base->start_time);
 	while(!sim_finished(philo->base) && !get_char_mutex(&(philo->philo_mtx), philo->full))
 	{
 		// Is it full?
@@ -113,20 +116,59 @@ void	*philo_simulation(void *philosopher)
 	return (NULL);
 }
 
-/* void	*check_deaths(void *base_void)
+void	*check_deaths(void *base_void)
 {
-	t_all *base;
+	t_all	*base;
+	int		i;
+	long		time_diff;
 
 	base = (t_all *)base_void;
-	
+	while (get_int_mutex(&(base->write_mtx), base->active_philos) != base->n_philo)
+		usleep(1);
+	while (!sim_finished(base))
+	{
+		i = 0;
+		while(i < base->n_philo && !sim_finished(base))
+		{
+			time_diff = get_time(MILLISECONDS) - \
+			get_long_mutex(&(base->philo[i]->philo_mtx), base->philo[i]->last_meal_time);
+			pthread_mutex_lock(&(base->write_mtx));
+			pthread_mutex_unlock(&(base->write_mtx));			
+			if (time_diff * 1000 > base->time_to_die && \
+			!get_char_mutex(&(base->philo[i]->philo_mtx), base->philo[i]->full))
+			{
+				display_message(base->philo[i], DIED);
+				set_char_mutex(&(base->sim_finished_mtx), &(base->simulation_finished), 1);
+			}
+			i++;
+		}
+	}
 	return (NULL);
-} */
+}
+
+void	one_philo(t_all *base)
+{
+	long start_time;
+	long time;
+
+	start_time = get_time(MILLISECONDS);
+	printf("%-6ld%d has taken a fork.\n", \
+	get_time(MILLISECONDS) - start_time, 1);
+	usleep(base->time_to_die);
+	time = get_time(MILLISECONDS) - start_time;
+	printf("%-6ld%d died.\n", time, 1);		
+
+}
 
 int	dinner(t_all *base){
 	int	i;
-
 	if (base->limit_of_meals == 0)
-		return 0;
+		return (0);
+	if (base->n_philo == 1)
+	{
+		one_philo(base);
+		return (0);
+	}
 	i = -1;
 	if (pthread_mutex_init(&(base->sim_finished_mtx), NULL))
 	{
@@ -146,15 +188,16 @@ int	dinner(t_all *base){
 			return (exit_error("General mutex init failed!"));
 		}
 	}
-//	pthread_create(&(base->death_checker), NULL, check_deaths, base);
 	base->start_time = get_time(MILLISECONDS);
 	set_char_mutex(&(base->sim_finished_mtx), &(base->simulation_ready), 1);
+	pthread_create(&(base->death_checker), NULL, check_deaths, base);
 	i = 0;
 	while(i < base->n_philo)
 	{
 		pthread_join(base->philo[i]->philo_thread, NULL);
 		i++;
 	}
+	pthread_join(base->death_checker, NULL);
 	return (0);
 
 	// We reach this point when all philosophers are full!

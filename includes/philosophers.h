@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 10:26:08 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 10:38:39 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ char	sim_finished(t_all *base);
 
 
 // Get Set
+void	set_int_mutex(pthread_mutex_t *mutex, int *to_change, int value);
+int		get_int_mutex(pthread_mutex_t *mutex, int variable);
 void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
 char	get_char_mutex(pthread_mutex_t *mutex, char variable);
 void	set_long_mutex(pthread_mutex_t *mutex, long *to_change, long value);
@@ -159,4 +161,5 @@ struct s_everything
 	long			start_time;
 	char			simulation_finished;
 	pthread_t		death_checker;
+	int				active_philos;
 	};
