@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 10:36:43 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 16:10:20 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 	base->time_to_sleep = ft_atoi_ph(argv[4]) * 1000;
 	base->simulation_ready = 0;
 	base->active_philos = 0;
+	base->simulation_finished = 0;
 	if(argc == 6)
 		base->limit_of_meals = ft_atoi_ph(argv[5]);
 	else
@@ -134,7 +135,7 @@ int	parse_init(t_all *base, int argc, char **argv)
 	if (init_mutexes(base, -1))
 		return(EXIT_FAILURE);
 	init_philos(base);
-	ft_print_philos(base);
+//	ft_print_philos(base);
 	return(0);
 }
 

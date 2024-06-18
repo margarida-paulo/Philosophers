@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 15:22:48 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 16:54:25 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	set_int_mutex(pthread_mutex_t *mutex, int *to_change, int value)
 	pthread_mutex_unlock(mutex);
 }
 
-int	get_int_mutex(pthread_mutex_t *mutex, int variable)
+int	get_int_mutex(pthread_mutex_t *mutex, int *variable)
 {
 	int value;
 
 	pthread_mutex_lock(mutex);
-	value = variable;
+	value = *variable;
 	pthread_mutex_unlock(mutex);
 	return (value);
 }
@@ -36,12 +36,12 @@ void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value)
 	pthread_mutex_unlock(mutex);
 }
 
-char	get_char_mutex(pthread_mutex_t *mutex, char variable)
+char	get_char_mutex(pthread_mutex_t *mutex, char *variable)
 {
 	char value;
 
 	pthread_mutex_lock(mutex);
-	value = variable;
+	value = *variable;
 	pthread_mutex_unlock(mutex);
 	return (value);
 }
@@ -53,12 +53,12 @@ void	set_long_mutex(pthread_mutex_t *mutex, long *to_change, long value)
 	pthread_mutex_unlock(mutex);
 }
 
-long	get_long_mutex(pthread_mutex_t *mutex, long variable)
+long	get_long_mutex(pthread_mutex_t *mutex, long *variable)
 {
 	long value;
 
 	pthread_mutex_lock(mutex);
-	value = variable;
+	value = *variable;
 	pthread_mutex_unlock(mutex);
 	return (value);
 }
@@ -101,7 +101,7 @@ void	my_own_usleep(long time_usec, t_all *base)
 			{
 				if (sim_finished(base))
 					return ;
-				usleep(1);
+				usleep(50);
 			}
 		}
 	}

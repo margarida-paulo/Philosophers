@@ -6,7 +6,7 @@
 #    By: maggie <maggie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 12:37:37 by mvalerio          #+#    #+#              #
-#    Updated: 2024/05/31 10:54:37 by maggie           ###   ########.fr        #
+#    Updated: 2024/06/18 15:48:50 by maggie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = philosophers
 
 CC = cc
 
-STANDARD_FLAGS = -Wall -Werror -Wextra -g #-fsanitize=address
+STANDARD_FLAGS = -Wall -Werror -Wextra -g -pthread #-fsanitize=address
 
 PHILO_LIB = philosophers.a
 

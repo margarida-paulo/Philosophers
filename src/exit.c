@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 09:38:39 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 15:42:50 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	free_everything(t_all *base)
 	free_forks_until(base, base->n_philo - 1);
 	free_philo_until(base, base->n_philo - 1);
 	free(base->philo);
-//	free(base->forks);
+	free(base->forks);
 	free(base);
 }
 
