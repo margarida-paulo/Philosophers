@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:29:09 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 09:37:35 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 18:36:17 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_mutexes(t_all *base, int i)
 	{
 		destroy_fork_mutexes_until(base, base->n_philo - 1);
 		free_everything(base);
-		return (exit_error("General mutex init failed!"));
+		return (exit_error("Simulation finished mutex init failed!"));
 	}
 	if (pthread_mutex_init(&(base->write_mtx), NULL))
 	{

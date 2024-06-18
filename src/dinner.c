@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 17:17:20 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 18:51:26 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,22 @@ void	eat(t_philo *philo)
 		return ;		
 	}
 	display_message(philo, TAKE_FIRST_FORK);
-	if (philo->base->n_philo > 1)
+	pthread_mutex_lock(&(philo->second_fork->lock_mtx));
+	if (sim_finished(philo->base))
 	{
-		pthread_mutex_lock(&(philo->second_fork->lock_mtx));
-		if (sim_finished(philo->base))
-		{
-			pthread_mutex_unlock(&(philo->first_fork->lock_mtx));
-			pthread_mutex_unlock(&(philo->second_fork->lock_mtx));				
-			return ;		
-		}
-		display_message(philo, TAKE_SECOND_FORK);
+		pthread_mutex_unlock(&(philo->first_fork->lock_mtx));
+		pthread_mutex_unlock(&(philo->second_fork->lock_mtx));				
+		return ;		
 	}
+	display_message(philo, TAKE_SECOND_FORK);
 	set_long_mutex(&(philo->philo_mtx), &(philo->last_meal_time), get_time(MILLISECONDS));
 	philo->meals_eaten++;
 	display_message(philo, EATING);
 	my_own_usleep(philo->base->time_to_eat, philo->base);
 	if (philo->base->limit_of_meals == philo->meals_eaten)
 		philo->full = 1;
-	pthread_mutex_unlock(&(philo->first_fork->lock_mtx));
-	if (philo->base->n_philo > 1)
-		pthread_mutex_unlock(&(philo->second_fork->lock_mtx));
+	pthread_mutex_unlock(&(philo->first_fork->lock_mtx));	
+	pthread_mutex_unlock(&(philo->second_fork->lock_mtx));
 }
 
 static void think(t_philo *philo)
@@ -60,19 +56,19 @@ void	display_message(t_philo *philo, t_actions action)
 	time_since_start = get_time(MILLISECONDS) - philo->base->start_time;
 		if ((action == TAKE_FIRST_FORK || action == TAKE_SECOND_FORK) && \
 		!sim_finished(philo->base))
-			printf("%-6ld%d has taken a fork.\n", \
+			printf("%-6ld%d has taken a fork\n", \
 			time_since_start, philo->id + 1);
 		if (action == EATING && !sim_finished(philo->base))
-			printf("%-6ld%d is eating.\n", \
+			printf("%-6ld%d is eating\n", \
 			time_since_start, philo->id + 1);
 		if (action == THINKING && !sim_finished(philo->base))
-			printf("%-6ld%d is thinking.\n", \
+			printf("%-6ld%d is thinking\n", \
 			time_since_start, philo->id + 1);
 		if (action == SLEEPING && !sim_finished(philo->base))
-			printf("%-6ld%d is sleeping.\n", \
+			printf("%-6ld%d is sleeping\n", \
 			time_since_start, philo->id + 1);
 		if (action == DIED)
-			printf("%-6ld%d died.\n", \
+			printf("%-6ld%d died\n", \
 			time_since_start, philo->id + 1);
 		pthread_mutex_unlock(&(philo->base->write_mtx));
 }
@@ -81,6 +77,7 @@ void	*philo_simulation(void *philosopher)
 {
 	t_philo *philo;
 	philo = (t_philo *)philosopher;
+	
 	while(!get_char_mutex(&(philo->base->sim_finished_mtx), &(philo->base->simulation_ready)))
 		usleep(50);
 	set_long_mutex(&(philo->philo_mtx), &(philo->last_meal_time), philo->base->start_time);
@@ -139,19 +136,34 @@ void	*check_deaths(void *base_void)
 	}
 	return (NULL);
 }
+void	one_philo(t_all *base)
+{
+	long curr_time;
 
-int	dinner(t_all *base){
+	base->start_time = get_time(MILLISECONDS);
+	display_message(base->philo[0], TAKE_FIRST_FORK);
+	curr_time = get_time(MILLISECONDS);
+	while ((base->time_to_die > (curr_time - base->start_time) * 1000))
+	{
+		usleep(50);
+		curr_time = get_time(MILLISECONDS);
+	}
+	display_message(base->philo[0], DIED);
+	return ;
+}
+
+int	dinner(t_all *base)
+{
 	int	i;
 	if (base->limit_of_meals == 0)
 		return (0);
 	i = -1;
-	if (pthread_mutex_init(&(base->sim_finished_mtx), NULL))
+	if (base->n_philo == 1)
 	{
-		destroy_fork_mutexes_until(base, base->n_philo - 1);
-		free_everything(base);
-		return (exit_error("General mutex init failed!"));
+		one_philo(base);
+		return (0);
 	}
-	while(++i < base->n_philo)
+	else while(++i < base->n_philo)
 	{
 		pthread_create(&(base->philo[i]->philo_thread), NULL, philo_simulation, base->philo[i]);
 		if (pthread_mutex_init(&(base->philo[i]->philo_mtx), NULL))

@@ -6,11 +6,11 @@
 #    By: maggie <maggie@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 12:37:37 by mvalerio          #+#    #+#              #
-#    Updated: 2024/06/18 15:48:50 by maggie           ###   ########.fr        #
+#    Updated: 2024/06/18 17:19:48 by maggie           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philosophers
+NAME = philo
 
 CC = cc
 
