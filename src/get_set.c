@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 10:38:15 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 15:22:48 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,23 @@ void	my_own_usleep(long time_usec, t_all *base)
 {
 	long start;
 
+	if (sim_finished(base))
+		return ;
 	start = get_time(USECS);
 	while(get_time(USECS) - start < time_usec)
 	{
-		if (get_char_mutex(&(base->sim_finished_mtx), base->simulation_finished))
+		if (sim_finished(base))
 			return ;
 		if ((get_time(USECS) - start) / 2 > 50)
 			usleep((get_time(USECS) - start) / 2);
 		else
 		{
-			while (get_time(USECS) - start < time_usec);
-			usleep(1);
-			return ;
+			while (get_time(USECS) - start < time_usec)
+			{
+				if (sim_finished(base))
+					return ;
+				usleep(1);
+			}
 		}
 	}
 }

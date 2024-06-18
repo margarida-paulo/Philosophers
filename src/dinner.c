@@ -6,7 +6,7 @@
 /*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 14:20:20 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/18 15:25:36 by maggie           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 void	eat(t_philo *philo)
 {
+	if (sim_finished(philo->base))
+		return ;
 	pthread_mutex_lock(&(philo->first_fork->lock_mtx));
 	display_message(philo, TAKE_FIRST_FORK);
-	pthread_mutex_lock(&(philo->second_fork->lock_mtx));
-	display_message(philo, TAKE_SECOND_FORK);
+	if (philo->base->n_philo > 1)
+	{
+		pthread_mutex_lock(&(philo->second_fork->lock_mtx));
+		display_message(philo, TAKE_SECOND_FORK);
+	}
 	set_long_mutex(&(philo->philo_mtx), &(philo->last_meal_time), get_time(MILLISECONDS));
 	philo->meals_eaten++;
 	display_message(philo, EATING);
@@ -25,7 +30,8 @@ void	eat(t_philo *philo)
 	if (philo->base->limit_of_meals == philo->meals_eaten)
 		philo->full = 1;
 	pthread_mutex_unlock(&(philo->first_fork->lock_mtx));
-	pthread_mutex_unlock(&(philo->second_fork->lock_mtx));
+	if (philo->base->n_philo > 1)
+		pthread_mutex_unlock(&(philo->second_fork->lock_mtx));
 }
 
 static void think(t_philo *philo)
@@ -98,18 +104,22 @@ void	*philo_simulation(void *philosopher)
 	while(!sim_finished(philo->base) && !get_char_mutex(&(philo->philo_mtx), philo->full))
 	{
 		// Is it full?
-		if (get_char_mutex(&(philo->philo_mtx), philo->full))
+		if (get_char_mutex(&(philo->philo_mtx), philo->full) || sim_finished(philo->base))
 			return (NULL);
 
 		// Eat
 		eat(philo);
 		if (philo->meals_eaten == philo->base->limit_of_meals)
 			philo->full = 1;
+		if (get_char_mutex(&(philo->philo_mtx), philo->full) || sim_finished(philo->base))
+			return (NULL);
 
 		// Sleep
 		display_message(philo, SLEEPING);
 		my_own_usleep(philo->base->time_to_sleep, philo->base);
 		// Think
+		if (get_char_mutex(&(philo->philo_mtx), philo->full) || sim_finished(philo->base))
+			return (NULL);
 
 		think(philo);
 	}
@@ -132,8 +142,8 @@ void	*check_deaths(void *base_void)
 		{
 			time_diff = get_time(MILLISECONDS) - \
 			get_long_mutex(&(base->philo[i]->philo_mtx), base->philo[i]->last_meal_time);
-			pthread_mutex_lock(&(base->write_mtx));
-			pthread_mutex_unlock(&(base->write_mtx));			
+/* 			pthread_mutex_lock(&(base->write_mtx));
+			pthread_mutex_unlock(&(base->write_mtx)); */			
 			if (time_diff * 1000 > base->time_to_die && \
 			!get_char_mutex(&(base->philo[i]->philo_mtx), base->philo[i]->full))
 			{
@@ -146,29 +156,10 @@ void	*check_deaths(void *base_void)
 	return (NULL);
 }
 
-void	one_philo(t_all *base)
-{
-	long start_time;
-	long time;
-
-	start_time = get_time(MILLISECONDS);
-	printf("%-6ld%d has taken a fork.\n", \
-	get_time(MILLISECONDS) - start_time, 1);
-	usleep(base->time_to_die);
-	time = get_time(MILLISECONDS) - start_time;
-	printf("%-6ld%d died.\n", time, 1);		
-
-}
-
 int	dinner(t_all *base){
 	int	i;
 	if (base->limit_of_meals == 0)
 		return (0);
-	if (base->n_philo == 1)
-	{
-		one_philo(base);
-		return (0);
-	}
 	i = -1;
 	if (pthread_mutex_init(&(base->sim_finished_mtx), NULL))
 	{
