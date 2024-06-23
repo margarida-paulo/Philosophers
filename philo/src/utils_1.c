@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 09:55:08 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/23 16:02:41 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:11:16 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ size_t	ft_strlen(char *s)
 }
 
 /*
-Returns 2 if the argument overflows int, 0 if it doesn't.
+Returns 2 if the argument overflows int, 0 if it doesn't,
+and 3 if there are non-numeric values.
 */
 char	ft_check_int(char *number)
 {
@@ -83,6 +84,8 @@ char	ft_check_int(char *number)
 	char	*int_max;
 
 	i = 0;
+	if (!number || !number[i])
+		return (3);
 	while (number && number[i])
 	{
 		if (!(number[i] >= '0' && number[i] <= '9'))
