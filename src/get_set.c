@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:47 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 16:54:25 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/23 14:03:28 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ long get_time(char time_type)
 	gettimeofday(&time, NULL);
 	if (time_type == SECONDS)
 		return(time.tv_sec + time.tv_usec / 1000000);
-	else if (time_type == MILLISECONDS)
+	else if (time_type == MS)
 		return(time.tv_sec * 1000 + time.tv_usec / 1000);
 	else if (time_type == USECS)
 		return(time.tv_sec * 1000000 + time.tv_usec);

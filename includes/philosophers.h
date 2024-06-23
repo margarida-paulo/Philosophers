@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/23 13:00:42 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/23 14:02:50 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 #define BOLDWHITE	"\033[1m\033[37m"
 
 # define SECONDS 0
-# define MILLISECONDS 1
+# define MS 1
 # define USECS 2
 
 #define DEBUG	1
