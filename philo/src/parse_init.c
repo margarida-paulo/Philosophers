@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/23 16:01:57 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:52:47 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,15 @@ void	init_philos(t_all *base)
 int	parse_init(t_all *base, int argc, char **argv)
 {
 	if (invalid_input(argc, argv))
+	{
+		free(base);
 		return (EXIT_FAILURE);
+	}
 	if (init_base_struct(base, argc, argv))
+	{
+		free(base);
 		return (EXIT_FAILURE);
+	}
 	if (init_mutexes(base, -1))
 		return (EXIT_FAILURE);
 	init_philos(base);

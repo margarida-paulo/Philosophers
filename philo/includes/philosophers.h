@@ -6,11 +6,12 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/23 16:16:59 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:57:02 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//Arguments: number_of_philosophers | time_to_die | time_to_eat | time_to_sleep | [min_meals]
+//Arguments:	number_of_philosophers | time_to_die | time_to_eat |
+//				time_to_sleep | [min_meals]
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -37,15 +38,15 @@
 #define BOLDCYAN	"\033[1m\033[36m"
 #define BOLDWHITE	"\033[1m\033[37m"
 
-# define SECONDS 0
-# define MS 1
-# define USECS 2
+#define SECONDS 0
+#define MS 1
+#define USECS 2
 
 #define DEBUG	1
 
 typedef struct s_philosophers	t_philo;
-typedef struct s_forks	t_forks;
-typedef struct s_everything	t_all;
+typedef struct s_forks			t_forks;
+typedef struct s_everything		t_all;
 
 typedef enum s_philo_actions
 {
@@ -55,14 +56,14 @@ typedef enum s_philo_actions
 	TAKE_FIRST_FORK,
 	TAKE_SECOND_FORK,
 	DIED
-} t_actions;
+}	t_actions;
 
 // Dinner
 void	start_basic_simulation(t_philo *philo);
 void	*philo_simulation(void *philosopher);
 void	one_philo(t_all *base);
 void	simulation(t_all *base, int i);
-int	dinner(t_all *base);
+int		dinner(t_all *base);
 
 // Dinner 2
 void	eat(t_philo *philo);
@@ -72,17 +73,15 @@ void	unsync_philos(t_philo *philo);
 void	*check_deaths(void *base_void);
 
 // Exit
-int	exit_error(char *str_error);
+int		exit_error(char *str_error);
 void	free_philo_until(t_all *base, int i);
 void	free_forks_until(t_all *base, int i);
-
 
 // Exit 2
 void	destroy_fork_mutexes_until(t_all *base, int i);
 void	destroy_full_mutexes_until(t_all *base, int i);
 void	free_everything(t_all *base);
 void	final_free_destroy(t_all *base);
-
 
 // Get Set Times
 void	set_long_mutex(pthread_mutex_t *mutex, long *to_change, long value);
@@ -92,29 +91,29 @@ void	my_own_usleep(long time_usec, t_all *base);
 
 // Get Set
 void	set_int_mutex(pthread_mutex_t *mutex, int *to_change, int value);
-int	get_int_mutex(pthread_mutex_t *mutex, int *variable);
+int		get_int_mutex(pthread_mutex_t *mutex, int *variable);
 void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
 char	get_char_mutex(pthread_mutex_t *mutex, char *variable);
 
 // Parse Init Mutex
-int	init_mutexes(t_all *base, int i);
+int		init_mutexes(t_all *base, int i);
 
 // Parse Init
-int	malloc_philo_forks_structs(t_all *base, int i);
-int	init_base_struct(t_all *base, int argc, char **argv);
-int	invalid_input(int argc, char **argv);
+int		malloc_philo_forks_structs(t_all *base, int i);
+int		init_base_struct(t_all *base, int argc, char **argv);
+int		invalid_input(int argc, char **argv);
 void	init_philos(t_all *base);
-int	parse_init(t_all *base, int argc, char **argv);
+int		parse_init(t_all *base, int argc, char **argv);
 
 // Utils 1
 size_t	ft_chars(long int a);
 char	*ft_itoa(int n);
 size_t	ft_strlen(char *s);
 char	ft_check_int(char *number);
-int	ft_atoi_ph(char *nptr);
+int		ft_atoi_ph(char *nptr);
 
 // Utils 2
-int	ft_strcmp(char *str1, char *str2);
+int		ft_strcmp(char *str1, char *str2);
 char	ft_atoi_check(char *nptr);
 void	ft_print_philos(t_all *base);
 void	all_philos_active(t_all *base);
@@ -137,7 +136,7 @@ struct s_philosophers
 	char			full;
 	long			meals_eaten;
 	long			last_meal_time;
-	pthread_t 		philo_thread;
+	pthread_t		philo_thread;
 	t_forks			*first_fork;
 	t_forks			*second_fork;
 	t_all			*base;
@@ -150,10 +149,9 @@ struct s_philosophers
 //grabs it at a time
 struct s_forks
 {
-	pthread_mutex_t lock_mtx;
+	pthread_mutex_t	lock_mtx;
 	unsigned int	id;
 };
-
 
 struct s_everything
 {
@@ -166,10 +164,10 @@ struct s_everything
 	int				limit_of_meals;
 	int				time_to_think;
 	char			simulation_ready;
-	pthread_mutex_t sim_finished_mtx;
-	pthread_mutex_t write_mtx;
+	pthread_mutex_t	sim_finished_mtx;
+	pthread_mutex_t	write_mtx;
 	long			start_time;
 	char			simulation_finished;
 	pthread_t		death_checker;
 	int				active_philos;
-	};
+};
