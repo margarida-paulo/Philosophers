@@ -6,7 +6,7 @@
 /*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/23 14:02:50 by mvalerio         ###   ########.fr       */
+/*   Updated: 2024/06/23 16:16:59 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,59 +57,68 @@ typedef enum s_philo_actions
 	DIED
 } t_actions;
 
+// Dinner
+void	start_basic_simulation(t_philo *philo);
+void	*philo_simulation(void *philosopher);
+void	one_philo(t_all *base);
+void	simulation(t_all *base, int i);
+int	dinner(t_all *base);
+
+// Dinner 2
+void	eat(t_philo *philo);
+void	think(t_philo *philo);
+void	display_message(t_philo *philo, t_actions action);
+void	unsync_philos(t_philo *philo);
+void	*check_deaths(void *base_void);
 
 // Exit
-int		exit_error(char *str_error);
+int	exit_error(char *str_error);
 void	free_philo_until(t_all *base, int i);
 void	free_forks_until(t_all *base, int i);
+
+
+// Exit 2
 void	destroy_fork_mutexes_until(t_all *base, int i);
+void	destroy_full_mutexes_until(t_all *base, int i);
 void	free_everything(t_all *base);
 void	final_free_destroy(t_all *base);
-void	destroy_full_mutexes_until(t_all *base, int i);
-
-// Utils
-// 1
-size_t	ft_chars(long int a);
-char	*ft_itoa(int n);
-size_t	ft_strlen(char *s);
-char 	ft_check_int(char *number);
-int		ft_atoi_ph(char *nptr);
-
-// 2
-int		ft_strcmp(char *str1, char *str2);
-char	ft_atoi_check(char *nptr);
-//Test Functions
-void	ft_print_philos(t_all *base);
 
 
-// Parse init
-int		malloc_philo_forks_structs(t_all *base, int i);
-void	init_argv_to_base(t_all *base, char **argv, int argc);
-int		init_base_struct(t_all *base, int argc, char **argv);
-int		invalid_input(int argc, char **argv);
-int		parse_init(t_all *base, int argc, char **argv);
-
-// Parse Input Mutexes
-int	init_mutexes(t_all *base, int i);
-
-// Dinner
-void	eat(t_philo *philo);
-void	display_message(t_philo *philo, t_actions action);
-void	*philo_simulation(void *philosopher);
-int		dinner(t_all *base);
-char	sim_finished(t_all *base);
-
-
-
-// Get Set
-void	set_int_mutex(pthread_mutex_t *mutex, int *to_change, int value);
-int		get_int_mutex(pthread_mutex_t *mutex, int *variable);
-void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
-char	get_char_mutex(pthread_mutex_t *mutex, char *variable);
+// Get Set Times
 void	set_long_mutex(pthread_mutex_t *mutex, long *to_change, long value);
 long	get_long_mutex(pthread_mutex_t *mutex, long *variable);
 long	get_time(char time_type);
 void	my_own_usleep(long time_usec, t_all *base);
+
+// Get Set
+void	set_int_mutex(pthread_mutex_t *mutex, int *to_change, int value);
+int	get_int_mutex(pthread_mutex_t *mutex, int *variable);
+void	set_char_mutex(pthread_mutex_t *mutex, char *to_change, char value);
+char	get_char_mutex(pthread_mutex_t *mutex, char *variable);
+
+// Parse Init Mutex
+int	init_mutexes(t_all *base, int i);
+
+// Parse Init
+int	malloc_philo_forks_structs(t_all *base, int i);
+int	init_base_struct(t_all *base, int argc, char **argv);
+int	invalid_input(int argc, char **argv);
+void	init_philos(t_all *base);
+int	parse_init(t_all *base, int argc, char **argv);
+
+// Utils 1
+size_t	ft_chars(long int a);
+char	*ft_itoa(int n);
+size_t	ft_strlen(char *s);
+char	ft_check_int(char *number);
+int	ft_atoi_ph(char *nptr);
+
+// Utils 2
+int	ft_strcmp(char *str1, char *str2);
+char	ft_atoi_check(char *nptr);
+void	ft_print_philos(t_all *base);
+void	all_philos_active(t_all *base);
+char	sim_finished(t_all *base);
 
 // ********** Structs **********
 

@@ -3,25 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 10:24:35 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/05/31 09:38:41 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/23 16:05:46 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-
 int	ft_strcmp(char *str1, char *str2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str1 && !str2)
 		return (0);
 	else if (!str1)
-		return (int)-(str2[0]);
+		return ((int)-(str2[0]));
 	else if (!str2)
 		return ((int)str1[0]);
 	while (str1[i] || str2[i])
@@ -46,12 +45,12 @@ char	ft_atoi_check(char *nptr)
 	while (nptr[i] == 32 || (nptr[i] >= 9 && nptr[i] <= 13))
 		i++;
 	if (nptr[i] == '-')
-		return(1);
+		return (1);
 	else if (nptr[i] == '+')
 	{
 		i++;
 	}
-	while(nptr[i] == '0')
+	while (nptr[i] == '0')
 		i++;
 	return (ft_check_int(&(nptr[i])));
 }
@@ -63,9 +62,22 @@ void	ft_print_philos(t_all *base)
 	i = 0;
 	while (i < base->n_philo)
 	{
-		printf("Philo ID:%d\n",base->philo[i]->id);
+		printf("Philo ID:%d\n", base->philo[i]->id);
 		printf("Philo First Fork:%d\n", base->philo[i]->first_fork->id);
 		printf("Philo Second Fork:%d\n\n", base->philo[i]->second_fork->id);
 		i++;
 	}
+}
+
+void	all_philos_active(t_all *base)
+{
+	while (get_int_mutex(&(base->write_mtx), \
+	&(base->active_philos)) != base->n_philo)
+		usleep(50);
+}
+
+char	sim_finished(t_all *base)
+{
+	return (get_char_mutex(&(base->sim_finished_mtx), \
+	&(base->simulation_finished)));
 }

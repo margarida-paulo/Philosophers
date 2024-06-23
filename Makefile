@@ -6,7 +6,7 @@
 #    By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 12:37:37 by mvalerio          #+#    #+#              #
-#    Updated: 2024/06/23 14:39:13 by mvalerio         ###   ########.fr        #
+#    Updated: 2024/06/23 16:19:22 by mvalerio         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,15 @@ PHILO_LIB = philosophers.a
 SRC = \
 	src/main.c \
 	src/exit.c \
+	src/exit_2.c \
 	src/parse_init.c \
 	src/utils_1.c \
 	src/utils_2.c \
 	src/parse_init_mutex.c \
 	src/dinner.c \
-	src/get_set.c
+	src/dinner_2.c \
+	src/get_set.c \
+	src/get_set_times.c
 
 OBJ = $(SRC:.c=.o)
 

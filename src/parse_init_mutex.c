@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init_mutex.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 10:29:09 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 18:36:17 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/23 15:59:42 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	init_mutexes(t_all *base, int i)
 		{
 			destroy_fork_mutexes_until(base, i);
 			free_everything(base);
-			return(exit_error("Forks init failed."));
+			return (exit_error("Forks init failed."));
 		}
 		((base->forks)[i])->id = i;
 	}
