@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 12:37:51 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 16:10:20 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/23 13:02:50 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ int	init_base_struct(t_all *base, int argc, char **argv)
 		free(base->forks);
 		return (exit_error("Malloc of philosophers faled!"));
 	}
+	if (base->n_philo % 2 != 0)
+		base->time_to_think = (base->time_to_eat * 2) - base->time_to_sleep;
+	else
+		base->time_to_think = 0;
 	return(malloc_philo_forks_structs(base, -1));
 }
 

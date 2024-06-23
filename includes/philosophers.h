@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maggie <maggie@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mvalerio <mvalerio@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 11:34:19 by mvalerio          #+#    #+#             */
-/*   Updated: 2024/06/18 16:03:49 by maggie           ###   ########.fr       */
+/*   Updated: 2024/06/23 13:00:42 by mvalerio         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ struct s_everything
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				limit_of_meals;
+	int				time_to_think;
 	char			simulation_ready;
 	pthread_mutex_t sim_finished_mtx;
 	pthread_mutex_t write_mtx;
